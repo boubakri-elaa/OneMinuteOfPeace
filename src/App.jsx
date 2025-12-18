@@ -89,22 +89,26 @@ const ShyCat = ({ language, resetKey }) => {
 
   return (
     <div
-      className="
+      className={`
         fixed z-40
-        bottom-4 right-4
-        flex items-end gap-2
+        right-2 sm:right-4
+        bottom-4 sm:bottom-4
+        flex items-end gap-1 sm:gap-2
         transition-all duration-500 ease-in-out
-      "
+      `}
       style={{ opacity: step === "goodbye" ? 0 : 0.95 }}
     >
       <div
         className={`
-          max-w-sm px-4 py-3 rounded-2xl
-          bg-white/90 backdrop-blur-sm shadow-lg
-          text-sm text-purple-800
+          max-w-[140px] sm:max-w-xs
+          px-2 py-1 sm:px-3 sm:py-2
+          rounded-xl sm:rounded-2xl
+          bg-white/90 backdrop-blur-sm shadow-md
+          text-[9px] sm:text-sm
+          text-purple-800
           border border-purple-100
-          transition-all duration-400 ease-in-out
           ${step === "goodbye" ? "opacity-0" : "opacity-100"}
+          transition-all duration-400 ease-in-out
         `}
       >
         {step === "afterClick"
@@ -117,9 +121,10 @@ const ShyCat = ({ language, resetKey }) => {
           <button
             onClick={() => setStep("afterClick")}
             className="
-              inline-flex items-center gap-1 ml-2
-              px-2 py-0.5 rounded-full
-              text-xs font-medium
+              inline-flex items-center gap-0.5 ml-1 sm:ml-2
+              px-1.5 py-0.5 sm:px-2
+              rounded-full
+              text-[8px] sm:text-xs font-medium
               bg-purple-100 text-purple-700
               hover:bg-purple-200
               transition-colors
@@ -138,7 +143,7 @@ const ShyCat = ({ language, resetKey }) => {
         }}
         className={`
           relative
-          w-24 h-24
+          w-10 h-10 sm:w-16 sm:h-16
           rounded-full
           bg-purple-200/70
           shadow-sm
@@ -147,18 +152,16 @@ const ShyCat = ({ language, resetKey }) => {
           transition-transform duration-400 ease-in-out
           ${step === "afterClick" ? "-translate-y-0.5" : ""}
         `}
-        aria-label="Petit compagnon"
       >
         <img
           src="/images/cat.gif"
           alt="Little cat"
-          className="w-16 h-16 object-contain"
+          className="w-8 h-8 sm:w-14 sm:h-14 object-contain"
         />
       </button>
     </div>
   );
 };
-
 
 
 // Translations
@@ -511,6 +514,8 @@ const App = () => {
   const [chatResetKey, setChatResetKey] = useState(0);
   const [heartDua, setHeartDua] = useState(null);
   const [showHeartDua, setShowHeartDua] = useState(false);
+  const soundMenuRef = useRef(null); // 👈 AJOUTÉ
+
 
   const triggerHeartDua = () => {
   setHeartDua(getRandomDua(language));
@@ -527,6 +532,23 @@ const App = () => {
   useEffect(() => {
     document.dir = isRTL ? 'rtl' : 'ltr';
   }, [isRTL]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (soundMenuRef.current && !soundMenuRef.current.contains(event.target)) {
+        setIsSoundMenuOpen(false);
+      }
+    };
+
+    if (isSoundMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isSoundMenuOpen]);
+
 
   // Mouse tracking
   useEffect(() => {
@@ -745,19 +767,13 @@ const stopMinute = () => {
       </audio>
 
       {/* Sound Toggle + menu + hint */}
+      {/* Sound Toggle + menu */}
       <div className="fixed top-4 left-4 z-50 flex items-center gap-2">
-        <div className="hidden sm:flex items-center gap-1 bg-white/70 backdrop-blur-sm px-3 py-1 rounded-full shadow-md animate-pulse-slow">
-          <span className="text-xs text-purple-700 font-medium">
-            Quran · Nasheed · Adhan
-          </span>
-          <span className="text-xs text-pink-500">tap here</span>
-        </div>
-
-        <div className="relative">
+        <div className="flex gap-2">
+          {/* Bouton Mute/Unmute */}
           <button
             onClick={() => {
               setIsSoundEnabled(prev => !prev);
-              setIsSoundMenuOpen(true);
             }}
             className="bg-white/70 backdrop-blur-sm rounded-full p-3 shadow-lg hover:scale-110 transition-all hover:bg-white/90 group relative"
           >
@@ -766,49 +782,64 @@ const stopMinute = () => {
             ) : (
               <VolumeX className="w-5 h-5 text-gray-400 group-hover:scale-110 transition-transform" />
             )}
-            <span className="absolute -top-1 -right-1 w-2 h-2 bg-pink-400 rounded-full animate-ping-slow" />
           </button>
 
-          {isSoundMenuOpen && (
-            <div className="mt-2 bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-2 flex flex-col text-sm">
-              <button
-                onClick={() => {
-                  setSoundType('quran');
-                  setSoundSrc('/sounds/quran.mp3');
-                  setIsSoundEnabled(true);
-                }}
-                className={`px-3 py-1 rounded-xl text-left hover:bg-purple-100 ${
-                  soundType === 'quran' ? 'bg-purple-200 text-purple-800 font-semibold' : ''
-                }`}
-              >
-                Quran
-              </button>
-              <button
-                onClick={() => {
-                  setSoundType('nasheed');
-                  setSoundSrc('/sounds/fiya-hubbun.mp3');
-                  setIsSoundEnabled(true);
-                }}
-                className={`px-3 py-1 rounded-xl text-left hover:bg-purple-100 ${
-                  soundType === 'nasheed' ? 'bg-purple-200 text-purple-800 font-semibold' : ''
-                }`}
-              >
-                Nasheed
-              </button>
-              <button
-                onClick={() => {
-                  setSoundType('adhan');
-                  setSoundSrc('/sounds/adhan.mp3');
-                  setIsSoundEnabled(true);
-                }}
-                className={`px-3 py-1 rounded-xl text-left hover:bg-purple-100 ${
-                  soundType === 'adhan' ? 'bg-purple-200 text-purple-800 font-semibold' : ''
-                }`}
-              >
-                Adhan
-              </button>
-            </div>
-          )}
+          {/* Bouton Menu */}
+          <div className="relative" ref={soundMenuRef}>
+            <button
+              onClick={() => {
+                setIsSoundMenuOpen(prev => !prev);
+              }}
+              className="bg-white/70 backdrop-blur-sm rounded-full p-3 shadow-lg hover:scale-110 transition-all hover:bg-white/90 group relative"
+            >
+              <span className="text-sm">🎵</span>
+              <span className="absolute -top-1 -right-1 w-2 h-2 bg-pink-400 rounded-full animate-ping-slow" />
+            </button>
+
+            {isSoundMenuOpen && (
+              <div className="absolute top-full left-0 mt-2 bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-2 flex flex-col text-sm min-w-[120px]">
+                <button
+                  onClick={() => {
+                    setSoundType('quran');
+                    setSoundSrc('/sounds/quran.mp3');
+                    setIsSoundEnabled(true);
+                    setIsSoundMenuOpen(false);
+                  }}
+                  className={`px-3 py-1 rounded-xl text-left hover:bg-purple-100 ${
+                    soundType === 'quran' ? 'bg-purple-200 text-purple-800 font-semibold' : ''
+                  }`}
+                >
+                  Quran
+                </button>
+                <button
+                  onClick={() => {
+                    setSoundType('nasheed');
+                    setSoundSrc('/sounds/fiya-hubbun.mp3');
+                    setIsSoundEnabled(true);
+                    setIsSoundMenuOpen(false);
+                  }}
+                  className={`px-3 py-1 rounded-xl text-left hover:bg-purple-100 ${
+                    soundType === 'nasheed' ? 'bg-purple-200 text-purple-800 font-semibold' : ''
+                  }`}
+                >
+                  Nasheed
+                </button>
+                <button
+                  onClick={() => {
+                    setSoundType('adhan');
+                    setSoundSrc('/sounds/adhan.mp3');
+                    setIsSoundEnabled(true);
+                    setIsSoundMenuOpen(false);
+                  }}
+                  className={`px-3 py-1 rounded-xl text-left hover:bg-purple-100 ${
+                    soundType === 'adhan' ? 'bg-purple-200 text-purple-800 font-semibold' : ''
+                  }`}
+                >
+                  Adhan
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -837,29 +868,29 @@ const stopMinute = () => {
 {/* Landing Screen */}
 {screen === "landing" && (
   <div
-    className={`min-h-screen flex flex-col items-center justify-center p-6 relative z-10 ${
-      language === "ar" ? "font-arabic-aref" : "font-latin"
-    }`}
+    className={`min-h-screen flex flex-col items-center justify-center px-4 py-6
+                relative z-10 ${language === "ar" ? "font-arabic-aref" : "font-latin"}`}
   >
-    <div className="max-w-md w-full text-center space-y-8 animate-fade-in">
-      <div className="space-y-4">
-        <h1 className="text-5xl font-light tracking-wide text-purple-800 animate-bounce-slow">
+    <div className="w-full max-w-md text-center space-y-6 md:space-y-8 animate-fade-in">
+      <div className="space-y-3 md:space-y-4">
+        <h1 className="text-3xl md:text-5xl font-light tracking-wide text-purple-800 animate-bounce-slow">
           {t.welcome}
         </h1>
-        <p className="text-2xl text-pink-600 font-light animate-pulse-slow">
+        <p className="text-lg md:text-2xl text-pink-600 font-light animate-pulse-slow">
           {t.subtitle}
         </p>
 
         <p
-          className={`leading-relaxed mt-4 text-purple-700 ${
-            language === "ar" ? "text-xl md:text-2xl" : "text-lg md:text-xl"
+          className={`leading-relaxed mt-2 md:mt-4 text-purple-700 ${
+            language === "ar" ? "text-sm md:text-2xl" : "text-sm md:text-xl"
           }`}
         >
           {t.concept}
         </p>
+
         <p
-          className={`mt-2 text-pink-600 ${
-            language === "ar" ? "text-sm md:text-lg" : "text-sm md:text-base"
+          className={`mt-1 md:mt-2 text-pink-600 ${
+            language === "ar" ? "text-xs md:text-lg" : "text-xs md:text-base"
           }`}
         >
           {t.stopHint}
