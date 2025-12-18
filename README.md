@@ -1,18 +1,14 @@
-# React + Vite
+# One Minute With Allah 🌙
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+One Minute With Allah is a small, calming web app that invites you to spend a single minute remembering Allah with Qur’anic verses, adhkar, and short reflections. After the minute finishes, the app suggests a simple good deed you can apply in your daily life. 🤲
 
-Currently, two official plugins are available:
+The interface is multilingual (Arabic, English, French) and uses a soft, pastel design with gentle animations, a shy cat companion in the corner 🐱, and a heart button that shows a short duʿā’ for the user. 💜
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## How to use
 
-## React Compiler
+1. Choose your language (AR / EN / FR). 🌍  
+2. Click the heart or the start button to begin the 1‑minute timer. ⏱️  
+3. Read the verses, adhkar and reflections that appear on the screen. 📖  
+4. At the end, receive a random good deed you can do right away. 🌱  
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
-
-Note: This will impact Vite dev & build performances.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+This project is intended as a small sadaqah jariyah: a simple doorway to pause, breathe, and reconnect with Allah, even on a busy day. ✨
