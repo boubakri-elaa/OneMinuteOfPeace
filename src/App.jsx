@@ -643,10 +643,10 @@ const stopMinute = () => {
 
   const shareMessage = () => {
     const shareText = language === 'en'
-      ? "I just spent a minute with Allah. Join me: One Minute With Allah"
+      ? "I just spent a minute with Allah. Join me: One Minute With Allah : https://one-minute-with-allah.vercel.app/ "
       : language === 'ar'
-      ? "لقد قضيت دقيقة مع الله. انضم إلي: دقيقة واحدة مع الله"
-      : "Je viens de passer une minute avec Allah. Rejoignez-moi : One Minute With Allah";
+      ? "لقد قضيت دقيقة مع الله. انضم إلي: دقيقة واحدة مع الله https://one-minute-with-allah.vercel.app/ "
+      : "Je viens de passer une minute avec Allah. Rejoignez-moi : One Minute With Allah https://one-minute-with-allah.vercel.app/";
 
     if (navigator.share) {
       navigator.share({ text: shareText });
@@ -767,7 +767,6 @@ const stopMinute = () => {
       </audio>
 
       {/* Sound Toggle + menu + hint */}
-      {/* Sound Toggle + menu */}
       <div className="fixed top-4 left-4 z-50 flex items-center gap-2">
         <div className="flex gap-2">
           {/* Bouton Mute/Unmute */}
