@@ -12,3 +12,4 @@ The interface is multilingual (Arabic, English, French) and uses a soft, pastel 
 4. At the end, receive a random good deed you can do right away. 🌱  
 
 This project is intended as a small sadaqah jariyah: a simple doorway to pause, breathe, and reconnect with Allah, even on a busy day. ✨
+Demo link : https://one-minute-with-allah.vercel.app/
